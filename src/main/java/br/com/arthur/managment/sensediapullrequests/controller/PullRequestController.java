@@ -4,9 +4,12 @@ import br.com.arthur.managment.sensediapullrequests.model.entity.PullRequestModa
 import br.com.arthur.managment.sensediapullrequests.repositories.PullRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,5 +21,9 @@ public class PullRequestController {
     public ResponseEntity<PullRequestModal> save(@RequestBody PullRequestModal requestModal){
         System.out.println("gravado com sucesso =>  " + requestModal);
        return ResponseEntity.ok(pullRequestRepository.save(requestModal));
+    }
+    @GetMapping("/buscar")
+    public ResponseEntity<List<PullRequestModal>> findAll(){
+       return ResponseEntity.ok(pullRequestRepository.findAll());
     }
 }
