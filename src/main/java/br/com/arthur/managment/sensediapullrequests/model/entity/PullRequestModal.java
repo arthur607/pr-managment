@@ -5,6 +5,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+
 
 @Document(collection = "service-modal.pr")
 @Getter
@@ -12,7 +15,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @ToString
 public class PullRequestModal {
 
+    @NotBlank
     private String nome;
+
+    @NotBlank
     private String url;
+
+    private LocalDateTime dateTime;
 
 }
