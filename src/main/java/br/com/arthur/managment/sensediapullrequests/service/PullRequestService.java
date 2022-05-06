@@ -1,5 +1,6 @@
 package br.com.arthur.managment.sensediapullrequests.service;
 
+import br.com.arthur.managment.sensediapullrequests.model.dto.PullRequestDto;
 import br.com.arthur.managment.sensediapullrequests.model.entity.PullRequestModal;
 import br.com.arthur.managment.sensediapullrequests.repositories.PullRequestRepository;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Service
-public class PullRequestService implements GenericService<PullRequestModal,Long> {
+public class PullRequestService implements GenericService<PullRequestModal,PullRequestDto,Long> {
 
     private final PullRequestRepository repository;
 
@@ -34,7 +35,6 @@ public class PullRequestService implements GenericService<PullRequestModal,Long>
     @Override
     public PullRequestModal save(PullRequestModal requestModal) {
         requestModal.setDateTime(LocalDateTime.now());
-        System.out.println("gravado com sucesso =>  " + requestModal);
 
         return GenericService.super.save(requestModal);
     }

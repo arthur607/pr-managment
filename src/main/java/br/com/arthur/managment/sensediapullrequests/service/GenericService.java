@@ -1,5 +1,7 @@
 package br.com.arthur.managment.sensediapullrequests.service;
 
+import br.com.arthur.managment.sensediapullrequests.repositories.GenericRepository;
+import br.com.arthur.managment.sensediapullrequests.util.Convertible;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
@@ -7,9 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public interface GenericService<T, ID> {
+public interface GenericService<T extends Convertible<DTO>,DTO, ID> extends GenericRepository<T,ID> {
 
-    MongoRepository<T, ID> getRepository();
 
     default T findById(ID id) {
         return getRepository().findById(id).orElseThrow();

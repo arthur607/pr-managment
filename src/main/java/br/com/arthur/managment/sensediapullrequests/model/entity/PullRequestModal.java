@@ -1,5 +1,7 @@
 package br.com.arthur.managment.sensediapullrequests.model.entity;
 
+import br.com.arthur.managment.sensediapullrequests.model.dto.PullRequestDto;
+import br.com.arthur.managment.sensediapullrequests.util.Convertible;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class PullRequestModal {
+public class PullRequestModal implements Convertible<PullRequestDto> {
 
     @NotBlank
     private String nome;
@@ -23,4 +25,14 @@ public class PullRequestModal {
 
     private LocalDateTime dateTime;
 
+    public PullRequestModal(PullRequestDto pullRequestDto) {
+        this.nome = pullRequestDto.getNome();
+        this.url = pullRequestDto.getUrl();
+        this.dateTime = LocalDateTime.now();
+    }
+
+    @Override
+    public PullRequestDto convert() {
+        return new PullRequestDto(this);
+    }
 }
