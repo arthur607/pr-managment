@@ -13,6 +13,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class PullRequestDto implements Convertible<PullRequestModal> {
 
     @NotBlank

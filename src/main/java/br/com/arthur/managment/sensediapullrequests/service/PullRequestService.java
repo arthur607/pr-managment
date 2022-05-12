@@ -14,12 +14,16 @@ public class PullRequestService implements GenericService<PullRequestModal,PullR
 
     private final PullRequestRepository repository;
 
+    //private final GenericClass genericClass;
+
     public PullRequestService(PullRequestRepository repository) {
         this.repository = repository;
+      //  this.genericClass = genericClass;
     }
 
     @Override
     public MongoRepository<PullRequestModal, Long> getRepository() {
+       // genericClass.genericMethod(new Object(),"");
         return repository;
     }
 
