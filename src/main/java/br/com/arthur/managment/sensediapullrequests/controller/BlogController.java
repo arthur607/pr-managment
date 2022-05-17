@@ -1,5 +1,6 @@
 package br.com.arthur.managment.sensediapullrequests.controller;
 
+import br.com.arthur.managment.sensediapullrequests.model.dto.ArticleDto;
 import br.com.arthur.managment.sensediapullrequests.model.dto.Image;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,21 @@ import java.util.Objects;
 public class BlogController {
 
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Image> upload(@RequestBody MultipartFile image){
+    ResponseEntity<Image> upload(@RequestBody MultipartFile image) {
+//        var file = new File("/home/arthur/IdeaProjects/html-css/blog-arthur/img/" + Objects.requireNonNull(image.getOriginalFilename()));
+//        var dest = new File("/home/arthur/IdeaProjects/html-css/blog-arthur/img/back");
+//        boolean isCreated = dest.mkdir();
+//        var files = new File("/home/arthur/IdeaProjects/html-css/blog-arthur/img/back",image.getOriginalFilename());
+//        System.out.println(isCreated);
+
         var path = "blog-arthur/img/" + Objects.requireNonNull(image.getOriginalFilename());
         System.out.println(path);
-        return ResponseEntity.ok(new Image(image.getOriginalFilename(), path));
+        return ResponseEntity.ok(new Image(image.getOriginalFilename(),path));
+    }
+
+    @PostMapping(value = "/save-post", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> save(@RequestBody ArticleDto article){
+        return ResponseEntity.ok().body(article);
+
     }
 }
