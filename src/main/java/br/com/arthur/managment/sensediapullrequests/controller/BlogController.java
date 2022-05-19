@@ -13,9 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,7 +32,7 @@ public class BlogController {
 //        var files = new File("/home/arthur/IdeaProjects/html-css/blog-arthur/img/back",image.getOriginalFilename());
 //        System.out.println(isCreated);
 
-        var path = "blog-arthur/img/" + Objects.requireNonNull(image.getOriginalFilename());
+        var path = "img/" + Objects.requireNonNull(image.getOriginalFilename());
         System.out.println(path);
         return ResponseEntity.ok(new Image(image.getOriginalFilename(), path));
     }
@@ -47,22 +44,20 @@ public class BlogController {
 
     }
 
-    @GetMapping(value = "/blog/{titleId}", produces = MediaType.TEXT_HTML_VALUE)
-    public String findPage(HttpServletRequest req, HttpServletResponse resp, @PathVariable String titleId) {
-        resp.setContentType(MediaType.TEXT_HTML_VALUE);
+    @GetMapping(value = "/buscar/{titleId}")
+    public ResponseEntity<?> findPage(@PathVariable String titleId) {
+
         Query query = new Query();
         query.addCriteria(Criteria.where("title").is(titleId));
         List<ArticleModel> articleModels = mongoOperations.find(query, ArticleModel.class, "service-modal.article");
         if (articleModels.size() == 0) {
-            resp.setStatus(404);
+            return ResponseEntity.notFound().build();
         }
-//        try {
-              //  resp.sendRedirect(String.format("http://localhost:5500/article/%s/blog.html", titleId));
-//            resp.sendRedirect("http://localhost:5500/"+titleId+"/blog-arthur/html/blog.html");
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-        return String.format("http://localhost:5500/article/%s/blog.html", titleId);
+        articleModels.forEach(e ->{
+            var title = e.getTitle().split("_");
+                e.setTitle(title[0]);
+        });
+        System.out.println(articleModels);
+        return ResponseEntity.ok(articleModels.get(0));
     }
 }
