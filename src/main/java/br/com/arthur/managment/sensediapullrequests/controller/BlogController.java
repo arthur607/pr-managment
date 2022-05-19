@@ -1,6 +1,7 @@
 package br.com.arthur.managment.sensediapullrequests.controller;
 
 import br.com.arthur.managment.sensediapullrequests.model.dto.ArticleDto;
+import br.com.arthur.managment.sensediapullrequests.model.dto.ArticleResponse;
 import br.com.arthur.managment.sensediapullrequests.model.dto.Image;
 import br.com.arthur.managment.sensediapullrequests.model.entity.ArticleModel;
 import br.com.arthur.managment.sensediapullrequests.repositories.ArticleRepository;
@@ -13,6 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,6 +46,7 @@ public class BlogController {
 
     @PostMapping(value = "/save-post", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@RequestBody ArticleDto article) {
+
         var save = repository.save(new ArticleModel(article));
         return ResponseEntity.ok().body(save);
 
@@ -56,8 +64,9 @@ public class BlogController {
         articleModels.forEach(e ->{
             var title = e.getTitle().split("_");
                 e.setTitle(title[0]);
+
         });
         System.out.println(articleModels);
-        return ResponseEntity.ok(articleModels.get(0));
+        return ResponseEntity.ok(new ArticleResponse(articleModels.get(0)));
     }
 }
