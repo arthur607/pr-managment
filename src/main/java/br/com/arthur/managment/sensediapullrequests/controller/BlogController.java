@@ -19,9 +19,11 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -61,12 +63,27 @@ public class BlogController {
         if (articleModels.size() == 0) {
             return ResponseEntity.notFound().build();
         }
-        articleModels.forEach(e ->{
+        articleModels.forEach(e -> {
             var title = e.getTitle().split("_");
-                e.setTitle(title[0]);
+            e.setTitle(title[0]);
 
         });
         System.out.println(articleModels);
         return ResponseEntity.ok(new ArticleResponse(articleModels.get(0)));
+    }
+
+    @GetMapping(value = "/buscar")
+    public ResponseEntity<List<ArticleResponse>> findAllPosts() {
+        List<ArticleModel> articleModels = mongoOperations.findAll(ArticleModel.class, "service-modal.article");
+        if (articleModels.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
+//        articleModels.forEach(e -> {
+//            String replace = e.getArticle().replace("#", "");
+//            e.setArticle(replace);
+//        });
+        var respArticleList = articleModels.stream().map(ArticleResponse::new).collect(Collectors.toList());
+        System.out.println(articleModels);
+        return ResponseEntity.ok(respArticleList);
     }
 }

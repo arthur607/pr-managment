@@ -14,13 +14,16 @@ import java.util.Date;
 @ToString
 public class ArticleResponse {
 
+    private String titleWithKey;
     private String title;
     private String article;
     private String bannerImage;
     private String createAt;
 
     public ArticleResponse(ArticleModel articleModel) {
-        this.title = articleModel.getTitle();
+        final var title = articleModel.getTitle().split("_");
+        this.title = title[0];
+        this.titleWithKey = articleModel.getTitle();
         this.article = articleModel.getArticle();
         this.bannerImage = articleModel.getBannerImage();
         this.createAt = new SimpleDateFormat("dd MMMM yyyy").format(Date.from(articleModel.getCreateAt()
