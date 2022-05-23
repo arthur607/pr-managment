@@ -11,16 +11,13 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -72,8 +69,8 @@ public class BlogController {
         return ResponseEntity.ok(new ArticleResponse(articleModels.get(0)));
     }
 
-    @GetMapping(value = "/buscar")
-    public ResponseEntity<List<ArticleResponse>> findAllPosts() {
+    @GetMapping(value = "/buscar", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findAllPosts() {
         List<ArticleModel> articleModels = mongoOperations.findAll(ArticleModel.class, "service-modal.article");
         if (articleModels.size() == 0) {
             return ResponseEntity.notFound().build();
